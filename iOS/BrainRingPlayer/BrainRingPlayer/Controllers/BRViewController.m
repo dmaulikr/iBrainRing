@@ -26,7 +26,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    self.gameRandomLatencyTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 + arc4random_uniform(2000) / 1000.0
+    self.gameRandomLatencyTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 + arc4random_uniform(1000) / 1000.0
                                                                    target:self
                                                                  selector:@selector(gameTimerFired:)
                                                                  userInfo:nil
@@ -53,7 +53,7 @@
         gettimeofday(&timeValueNow, NULL);
         double timeDiff = (timeValueNow.tv_sec - self.startTimeValue.tv_sec) + 1e-6 * (timeValueNow.tv_usec - self.startTimeValue.tv_usec);
         
-        self.view.backgroundColor = [UIColor greenColor];
+        self.view.backgroundColor = [UIColor blueColor];
         self.infoLabel.text = [NSString stringWithFormat:@"Time: %.3f s", timeDiff];
         NSLog(@"%f", timeDiff);
     }
@@ -65,7 +65,7 @@
         NSLog(@"Falstart");
     }
     
-    self.gameRandomLatencyTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 + arc4random_uniform(2000) / 1000.0
+    self.gameRandomLatencyTimer = [NSTimer scheduledTimerWithTimeInterval:2.0 + arc4random_uniform(1000) / 1000.0
                                                                    target:self
                                                                  selector:@selector(gameTimerFired:)
                                                                  userInfo:nil
@@ -78,8 +78,9 @@
     if (aTimer == self.gameRandomLatencyTimer)
     {
         self.infoLabel.text = @"Go!";
-        self.view.backgroundColor = [UIColor blueColor];
         self.isGameRunning = YES;
+        self.view.backgroundColor = [UIColor yellowColor];
+        
         gettimeofday(&_startTimeValue, NULL);
     }
 }

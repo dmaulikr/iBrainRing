@@ -1,38 +1,21 @@
 //
 //  BRAppDelegate.m
-//  iBrainRing
+//  BrainRingPlayer
 //
-//  Created by Sergey Dunets on 21.09.13.
+//  Created by Sergey Dunets on 27.09.13.
 //  Copyright (c) 2013 Sergey Dunets. All rights reserved.
 //
 
 #import "BRAppDelegate.h"
 
-#import "BRViewController.h"
-
 @implementation BRAppDelegate
-
-- (void)dealloc
-{
-    [_window release];
-    [_viewController release];
-    [super dealloc];
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]] autorelease];
     // Override point for customization after application launch.
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        self.viewController = [[[BRViewController alloc] initWithNibName:@"BRViewController_iPhone" bundle:nil] autorelease];
-    } else {
-        self.viewController = [[[BRViewController alloc] initWithNibName:@"BRViewController_iPad" bundle:nil] autorelease];
-    }
-    self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
     return YES;
 }
-
+							
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
