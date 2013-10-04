@@ -227,6 +227,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Sergey Dunets";
 				TargetAttributes = {
+					75FECA8F17F60E3B00C2B382 = {
+						DevelopmentTeam = 4SAXR6TAK3;
+					};
 					75FECAB317F60E3B00C2B382 = {
 						TestTargetID = 75FECA8F17F60E3B00C2B382;
 					};
@@ -418,11 +421,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BrainRingPlayer/BrainRingPlayer-Prefix.pch";
 				INFOPLIST_FILE = "BrainRingPlayer/BrainRingPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -433,11 +439,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BrainRingPlayer/BrainRingPlayer-Prefix.pch";
 				INFOPLIST_FILE = "BrainRingPlayer/BrainRingPlayer-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -503,6 +512,7 @@
 				75FECAC717F60E3B00C2B382 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		75FECAC817F60E3B00C2B382 /* Build configuration list for PBXNativeTarget "BrainRingPlayerTests" */ = {
 			isa = XCConfigurationList;
@@ -511,6 +521,7 @@
 				75FECACA17F60E3B00C2B382 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

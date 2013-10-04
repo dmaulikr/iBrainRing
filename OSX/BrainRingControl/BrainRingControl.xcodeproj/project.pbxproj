@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		75E8E8A717FE3F6900EF409E /* QBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 75E8E8A017FE3F6900EF409E /* QBrowser.m */; };
+		75E8E8A817FE3F6900EF409E /* QCommandConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 75E8E8A217FE3F6900EF409E /* QCommandConnection.m */; };
+		75E8E8A917FE3F6900EF409E /* QCommandLineConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 75E8E8A417FE3F6900EF409E /* QCommandLineConnection.m */; };
+		75E8E8AA17FE3F6900EF409E /* QServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 75E8E8A617FE3F6900EF409E /* QServer.m */; };
 		75FECA4F17F5FDE100C2B382 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FECA4E17F5FDE100C2B382 /* Cocoa.framework */; };
 		75FECA5917F5FDE100C2B382 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 75FECA5717F5FDE100C2B382 /* InfoPlist.strings */; };
 		75FECA5B17F5FDE100C2B382 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FECA5A17F5FDE100C2B382 /* main.m */; };
@@ -31,6 +35,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		75E8E89F17FE3F6900EF409E /* QBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QBrowser.h; path = ../../../Common/3rdParty/QBrowser.h; sourceTree = "<group>"; };
+		75E8E8A017FE3F6900EF409E /* QBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QBrowser.m; path = ../../../Common/3rdParty/QBrowser.m; sourceTree = "<group>"; };
+		75E8E8A117FE3F6900EF409E /* QCommandConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QCommandConnection.h; path = ../../../Common/3rdParty/QCommandConnection.h; sourceTree = "<group>"; };
+		75E8E8A217FE3F6900EF409E /* QCommandConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QCommandConnection.m; path = ../../../Common/3rdParty/QCommandConnection.m; sourceTree = "<group>"; };
+		75E8E8A317FE3F6900EF409E /* QCommandLineConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QCommandLineConnection.h; path = ../../../Common/3rdParty/QCommandLineConnection.h; sourceTree = "<group>"; };
+		75E8E8A417FE3F6900EF409E /* QCommandLineConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QCommandLineConnection.m; path = ../../../Common/3rdParty/QCommandLineConnection.m; sourceTree = "<group>"; };
+		75E8E8A517FE3F6900EF409E /* QServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QServer.h; path = ../../../Common/3rdParty/QServer.h; sourceTree = "<group>"; };
+		75E8E8A617FE3F6900EF409E /* QServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QServer.m; path = ../../../Common/3rdParty/QServer.m; sourceTree = "<group>"; };
 		75FECA4B17F5FDE100C2B382 /* BrainRingControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BrainRingControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75FECA4E17F5FDE100C2B382 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		75FECA5117F5FDE100C2B382 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -73,6 +85,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		75E8E89E17FE3F1F00EF409E /* 3rdParty */ = {
+			isa = PBXGroup;
+			children = (
+				75E8E89F17FE3F6900EF409E /* QBrowser.h */,
+				75E8E8A017FE3F6900EF409E /* QBrowser.m */,
+				75E8E8A117FE3F6900EF409E /* QCommandConnection.h */,
+				75E8E8A217FE3F6900EF409E /* QCommandConnection.m */,
+				75E8E8A317FE3F6900EF409E /* QCommandLineConnection.h */,
+				75E8E8A417FE3F6900EF409E /* QCommandLineConnection.m */,
+				75E8E8A517FE3F6900EF409E /* QServer.h */,
+				75E8E8A617FE3F6900EF409E /* QServer.m */,
+			);
+			name = 3rdParty;
+			sourceTree = "<group>";
+		};
 		75FECA4217F5FDE100C2B382 = {
 			isa = PBXGroup;
 			children = (
@@ -118,6 +145,7 @@
 				75FECACE17F61C9000C2B382 /* Model */,
 				75FECAD017F61CA200C2B382 /* Controllers */,
 				75FECACF17F61C9A00C2B382 /* Views */,
+				75E8E89E17FE3F1F00EF409E /* 3rdParty */,
 				75FECA6317F5FDE100C2B382 /* MainMenu.xib */,
 				75FECA6617F5FDE100C2B382 /* Images.xcassets */,
 				75FECA5517F5FDE100C2B382 /* Supporting Files */,
@@ -278,7 +306,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				75FECAD317F61F1300C2B382 /* BRAppDelegate.m in Sources */,
+				75E8E8A917FE3F6900EF409E /* QCommandLineConnection.m in Sources */,
 				75FECA5B17F5FDE100C2B382 /* main.m in Sources */,
+				75E8E8A717FE3F6900EF409E /* QBrowser.m in Sources */,
+				75E8E8AA17FE3F6900EF409E /* QServer.m in Sources */,
+				75E8E8A817FE3F6900EF409E /* QCommandConnection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
