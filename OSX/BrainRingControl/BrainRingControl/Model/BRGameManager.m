@@ -9,17 +9,6 @@
 #import "BRGameManager.h"
 
 
-/// Notifications
-NSString * const kTimerWillStart = @"kTimerWillStart";
-NSString * const kTimerDidStart = @"kTimerDidStart";
-NSString * const kTimerDidStop = @"kTimerDidStop";
-NSString * const kGameDidReset = @"kGameDidReset";
-NSString * const kPlayerDidPressButton = @"kPlayerDidPressButton";
-NSString * const kShouldProcessFalseStartDidChange = @"kShouldProcessFalseStartDidChange";
-
-/// Notification Info keys
-NSString * const kPlayerKey = @"kPlayerKey";
-NSString * const kPlayerTimeKey = @"kPlayerTimeKey";
 
 
 @interface BRGameManager ()
@@ -28,7 +17,6 @@ NSString * const kPlayerTimeKey = @"kPlayerTimeKey";
 @property (nonatomic, retain) NSMutableArray    *players;
 @property (nonatomic, assign) NSInteger         maxPlayersCount;
 
-@property (nonatomic, assign) BRGameState       gameState;
 @property (nonatomic, assign) BOOL              shouldProcessFalseStart;
 
 @end
