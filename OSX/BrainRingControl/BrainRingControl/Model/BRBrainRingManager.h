@@ -8,67 +8,84 @@
 
 #import <Foundation/Foundation.h>
 
-/// Constants
+// Notification names
 
-/// Notification names
-extern NSString * const kTimerWillStart;
-extern NSString * const kTimerDidStart;
-extern NSString * const kTimerDidStop;
-extern NSString * const kGameDidReset;
+/// The @c kGameDidStop notification is sent after the game was stopped.
+extern NSString * const kGameDidStop;
+
+/// The @c kGameWillStartAfterDelay notification is sent after the delay timer was run.
+/// userInfo keys:
+/// @arg @c kDelayKey - the delay time in seconds.
+extern NSString * const kGameWillStartAfterDelay;
+
+/// A player had pressed the game button before the timer started.
+/// userInfo keys:
+/// @arg @c kPlayerKey - the player name.
+/// @arg @c kPlayerTimeKey - the player time in seconds after the game was stopped.
+extern NSString * const kPlayerDidPressFalseStart;
+
+/// Full time timer (60 s) was run.
+extern NSString * const kGameDidStart;
+
+/// A player pressed the game button.
+/// userInfo keys:
+/// @arg @c kPlayerKey - the player name.
+/// @arg @c kPlayerTimeKey - the player time in seconds after the game timer was run.
 extern NSString * const kPlayerDidPressButton;
-extern NSString * const kShouldProcessFalseStartDidChange;
 
-/// Notification info keys
+/// 20 second timer was run.
+extern NSString * const kGameDidResumeAfterWrongAnswer;
+
+
+// Notification userInfo dictionary keys
+
+extern NSString * const kDelayKey;
 extern NSString * const kPlayerKey;
 extern NSString * const kPlayerTimeKey;
+extern NSString * const kTimerTime;
 
-/// @enum BRGameState Subclasses should decide how to use these constants
+// Game states
+
 typedef NS_ENUM(NSInteger, BRGameState) {
-    kGameStateStopped,      ///< Game stopped. Initial game state.
-    kGameStateDelay,        ///< Delay before the timer starts.
-    kGameStateTimerOn,      ///< Timer is on.
-    kGameStateTimerPaused   ///< Timer is paused.
+    kGameStateStopped,                          ///< An initial game state.
+    kGameStateDelayedBeforeTimerStart,          ///< Random delay before the timer starts.
+    kGameStateFalseStart,                       ///< A player had pressed button before the timer was run, i.e. while
+                                                ///< kGameStateDelayedBeforeTimerStart.
+    kGameStateTimerCountsFullTime,              ///< Timer is counting full time (60 seconds in brain ring).
+    kGameStatePaused,                           ///< Timer is stopped. A player/team answers the question.
+                                                ///< If the answer is correct the game state changes to kGameStateStopped, otherwise
+                                                ///< timer runs additional time for another team
+                                                ///< changing the state to kGameStateTimerCountsTimeAfterWrongAnswer
+    kGameStateTimerCountsTimeAfterWrongAnswer   ///< The timer runs if the previous player/team answered wrong.
 };
 
 
+/// @class BRBrainRingManager
+/// @brief This is the main model class in the application.
 @interface BRBrainRingManager : NSObject
 
-/**
- @brief Adds a player to a game. If a player already exists, it won't be added.
- @param[in] aPlayer Unique player name. This can be a device ID or a custom string.
- @return YES if a player was added; NO otherwise.
- */
+/// @brief Adds a player to a game. If a player already exists, it won't be added.
+/// @param[in] aPlayer Unique player name. This can be a device ID or a custom string.
+/// @return YES if a player was added; NO otherwise.
 - (BOOL)addPlayer:(NSString *)aPlayer;
 
-/**
- @brief Removes the player from a game.
- @param[in] aPlayer Unique player name. If no user is found, nothing happens.
- */
+/// @brief Removes the player from a game.
+/// @param[in] aPlayer Unique player name. If no user is found, nothing happens.
 - (void)removePlayer:(NSString *)aPlayer;
 
-
-/**
- @brief Starts timer for 60 s.
- */
+/// @brief Starts timer for 60 s after a short delay.
 - (void)startTimerForFullTime;
 
-/**
- @brief Starts timer for the second team, 20 s.
- */
+/// @brief Starts timer for 20 s without a delay.
 - (void)startTimerAfterWrongAnswer;
 
-/**
- @brief Stops the timer.
- */
-- (void)resetCurrentTimer;
+/// @brief Force stop the game, e.g. in the case of a referee did something wrong.
+- (void)forceStopTheGame;
 
-/**
- @brief Call this method when the user presses a game button on his client.
- @param[in] aPlayer Unique player name.
- @param[in] aTime Time measured on a device.
- @param[in] aState Game state on a device.
- */
+/// @brief Call this method when the user presses a game button in the client app.
+/// @param[in] aPlayer Unique player name.
+/// @param[in] aTime Time measured on a device.
+/// @param[in] aState Game state on a device.
 - (void)player:(NSString *)aPlayer didPressButtonWithInternalTime:(NSTimeInterval)aTime internalGameState:(BRGameState)aState;
-
 
 @end

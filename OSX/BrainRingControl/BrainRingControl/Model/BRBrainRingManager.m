@@ -9,7 +9,7 @@
 #import "BRBrainRingManager.h"
 #import <sys/time.h>
 
-/// Notifications
+// Notifications
 NSString * const kTimerWillStart = @"kTimerWillStart";
 NSString * const kTimerDidStart = @"kTimerDidStart";
 NSString * const kTimerDidStop = @"kTimerDidStop";
@@ -17,7 +17,7 @@ NSString * const kGameDidReset = @"kGameDidReset";
 NSString * const kPlayerDidPressButton = @"kPlayerDidPressButton";
 NSString * const kShouldProcessFalseStartDidChange = @"kShouldProcessFalseStartDidChange";
 
-/// Notification Info keys
+// Notification Info keys
 NSString * const kPlayerKey = @"kPlayerKey";
 NSString * const kPlayerTimeKey = @"kPlayerTimeKey";
 
@@ -31,7 +31,6 @@ const NSTimeInterval kTimeAfterWrongAnswer = 20.;
 
 @property (nonatomic, assign) BRGameState       gameState;
 @property (nonatomic, retain) NSMutableArray    *players;
-@property (nonatomic, assign) BOOL              shouldProcessFalseStart;
 @property (nonatomic, assign) struct timeval    currentTimeVal;
 
 @end
@@ -59,7 +58,7 @@ const NSTimeInterval kTimeAfterWrongAnswer = 20.;
 - (void)startTimerForBothTeams
 {
     gettimeofday(&_currentTimeVal, NULL);
-    double timeDiff = (timeValueNow.tv_sec - self.startTimeValue.tv_sec) + 1e-6 * (timeValueNow.tv_usec - self.startTimeValue.tv_usec);
+//    double timeDiff = (timeValueNow.tv_sec - self.startTimeValue.tv_sec) + 1e-6 * (timeValueNow.tv_usec - self.startTimeValue.tv_usec);
 
 }
 
