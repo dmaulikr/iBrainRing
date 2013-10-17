@@ -84,7 +84,10 @@ typedef NS_ENUM(NSInteger, BRGameState) {
 #pragma mark - Automatic gameplay
 
 /// @brief Use this method to run a game in a fully automatic mode.
-- (void)startGameInAutomaticMode;
+/// @param[out] anError Pointer to an NSError variable
+/// @return YES if the game started. If the method fails to start the game, it
+/// returns NO and sets NSError.
+- (BOOL)startGameInAutomaticModeError:(NSError **)anError;
 
 /// @brief Call this method when the user presses a game button in the client app.
 /// @param[in] aPlayer Unique player name.
@@ -97,13 +100,15 @@ typedef NS_ENUM(NSInteger, BRGameState) {
 /// @param[in] aFlag Boolean flag: YES if the answer was correct.
 - (void)player:(NSString *)aPLayer didAnswerCorrecly:(BOOL)aFlag;
 
-#pragma mark - Manual gameplay
+#pragma mark - Basic gameplay methods
 
 /// @brief Starts timer for 60 s after a short delay.
-- (void)startTimerForFullTime;
+/// @return NO if an error occurs
+- (BOOL)startTimerForFullTime;
 
 /// @brief Starts timer for 20 s without a delay.
-- (void)startTimerAfterWrongAnswer;
+/// @return NO if an error occurs
+- (BOOL)startTimerAfterWrongAnswer;
 
 /// @brief Force stop the game, e.g. in the case of a referee did something wrong.
 - (void)forceStopGame;

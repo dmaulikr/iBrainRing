@@ -63,6 +63,8 @@ const NSTimeInterval kTimeAfterWrongAnswer = 20.;
     [super dealloc];
 }
 
+#pragma mark - Managing players
+
 - (BOOL)addPlayer:(NSString *)aPlayer
 {
     BOOL result = NO;
@@ -81,9 +83,25 @@ const NSTimeInterval kTimeAfterWrongAnswer = 20.;
     [self.allPlayers removeObject:aPlayer];
 }
 
-- (void)startGameInAutomaticMode
+#pragma mark - Automatic gameplay
+
+- (BOOL)startGameInAutomaticModeError:(NSError **)anError
 {
+    if (anError)
+    {
+        *anError = nil;
+    }
     
+    BOOL result = self.allPlayers.count == 2;
+    
+    if (result && ![self startTimerForFullTime])
+    {
+        result = NO;
+    }
+    
+    // ...
+    
+    return result;
 }
 
 - (void)player:(NSString *)aPlayer didPressButtonWithInternalTime:(NSTimeInterval)aTime internalGameState:(BRGameState)aState
@@ -96,16 +114,20 @@ const NSTimeInterval kTimeAfterWrongAnswer = 20.;
     
 }
 
-- (void)startTimerForFullTime
+#pragma mark - Basic gameplay methods
+
+- (BOOL)startTimerForFullTime
 {
+    BOOL result = YES;
     gettimeofday(&_currentTimeVal, NULL);
 //    double timeDiff = (timeValueNow.tv_sec - self.startTimeValue.tv_sec) + 1e-6 * (timeValueNow.tv_usec - self.startTimeValue.tv_usec);
-
+    return result;
 }
 
-- (void)startTimerAfterWrongAnswer
+- (BOOL)startTimerAfterWrongAnswer
 {
-    
+    BOOL result = YES;
+    return result;
 }
 
 - (void)forceStopGame
