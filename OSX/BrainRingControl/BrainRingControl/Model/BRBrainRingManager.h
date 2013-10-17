@@ -11,6 +11,8 @@
 // Notification names
 
 /// The @c kGameDidStop notification is sent after the game was stopped.
+/// userInfo keys:
+/// @arg @c kPlayersKey - NSArray of players
 extern NSString * const kGameDidStop;
 
 /// The @c kGameWillStartAfterDelay notification is sent after the delay timer was run.
@@ -39,23 +41,30 @@ extern NSString * const kGameDidResumeAfterWrongAnswer;
 
 // Notification userInfo dictionary keys
 
+extern NSString * const kPlayersKey;
 extern NSString * const kDelayKey;
 extern NSString * const kPlayerKey;
 extern NSString * const kPlayerTimeKey;
-extern NSString * const kTimerTime;
 
 // Game states
 
 typedef NS_ENUM(NSInteger, BRGameState) {
     kGameStateStopped,                          ///< An initial game state.
+    
     kGameStateDelayedBeforeTimerStart,          ///< Random delay before the timer starts.
-    kGameStateFalseStart,                       ///< A player had pressed button before the timer was run, i.e. while
+    
+    kGameStateFalseStart,                       ///< The user inited state.
+                                                ///< A player had pressed button before the timer was run, i.e. while
                                                 ///< kGameStateDelayedBeforeTimerStart.
-    kGameStateTimerCountsFullTime,              ///< Timer is counting full time (60 seconds in brain ring).
-    kGameStatePaused,                           ///< Timer is stopped. A player/team answers the question.
+    
+    kGameStateTimerCountsFullTime,              ///< The timer is counting full time (60 seconds in brain ring).
+    
+    kGameStatePaused,                           ///< The user inited state.
+                                                ///< The timer is stopped. A player/team answers the question.
                                                 ///< If the answer is correct the game state changes to kGameStateStopped, otherwise
                                                 ///< timer runs additional time for another team
                                                 ///< changing the state to kGameStateTimerCountsTimeAfterWrongAnswer
+    
     kGameStateTimerCountsTimeAfterWrongAnswer   ///< The timer runs if the previous player/team answered wrong.
 };
 
@@ -80,7 +89,7 @@ typedef NS_ENUM(NSInteger, BRGameState) {
 - (void)startTimerAfterWrongAnswer;
 
 /// @brief Force stop the game, e.g. in the case of a referee did something wrong.
-- (void)forceStopTheGame;
+- (void)forceStopGame;
 
 /// @brief Call this method when the user presses a game button in the client app.
 /// @param[in] aPlayer Unique player name.

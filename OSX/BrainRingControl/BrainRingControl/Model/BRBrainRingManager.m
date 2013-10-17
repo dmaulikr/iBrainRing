@@ -18,6 +18,8 @@ NSString * const kPlayerDidPressButton = @"kPlayerDidPressButton";
 NSString * const kShouldProcessFalseStartDidChange = @"kShouldProcessFalseStartDidChange";
 
 // Notification Info keys
+NSString * const kPlayersKey = @"kPlayersKey";
+NSString * const kDelayKey = @"kDelayKey";
 NSString * const kPlayerKey = @"kPlayerKey";
 NSString * const kPlayerTimeKey = @"kPlayerTimeKey";
 
@@ -30,17 +32,32 @@ const NSTimeInterval kTimeAfterWrongAnswer = 20.;
 @interface BRBrainRingManager ()
 
 @property (nonatomic, assign) BRGameState       gameState;
-@property (nonatomic, retain) NSMutableArray    *players;
+@property (nonatomic, retain) NSMutableArray    *allPlayers;
+@property (nonatomic, retain) NSMutableArray    *playersInGame;
 @property (nonatomic, assign) struct timeval    currentTimeVal;
 
 @end
 
 @implementation BRBrainRingManager
 
+#pragma mark - Public
+
+- (id)init
+{
+    if (self = [super init])
+    {
+        _allPlayers = [NSMutableArray new];
+        _playersInGame = [NSMutableArray new];
+        _gameState = kGameStateStopped;
+    }
+    
+    return self;
+}
+
 - (BOOL)addPlayer:(NSString *)aPlayer
 {
     BOOL result = NO;
-    NSMutableArray *players = self.players;
+    NSMutableArray *players = self.allPlayers;
     if (kMaxPlayersCount < players.count && ![players containsObject:aPlayer])
     {
         [players addObject:aPlayer];
@@ -52,14 +69,38 @@ const NSTimeInterval kTimeAfterWrongAnswer = 20.;
 
 - (void)removePlayer:(NSString *)aPlayer
 {
-    [self.players removeObject:aPlayer];
+    [self.allPlayers removeObject:aPlayer];
 }
 
-- (void)startTimerForBothTeams
+- (void)startTimerForFullTime
 {
     gettimeofday(&_currentTimeVal, NULL);
 //    double timeDiff = (timeValueNow.tv_sec - self.startTimeValue.tv_sec) + 1e-6 * (timeValueNow.tv_usec - self.startTimeValue.tv_usec);
 
 }
+
+/// @brief Starts timer for 20 s without a delay.
+- (void)startTimerAfterWrongAnswer
+{
+    
+}
+
+/// @brief Force stop the game, e.g. in the case of a referee did something wrong.
+- (void)forceStopGame
+{
+    
+}
+
+/// @brief Call this method when the user presses a game button in the client app.
+/// @param[in] aPlayer Unique player name.
+/// @param[in] aTime Time measured on a device.
+/// @param[in] aState Game state on a device.
+- (void)player:(NSString *)aPlayer didPressButtonWithInternalTime:(NSTimeInterval)aTime internalGameState:(BRGameState)aState
+{
+    
+}
+
+
+
 
 @end
