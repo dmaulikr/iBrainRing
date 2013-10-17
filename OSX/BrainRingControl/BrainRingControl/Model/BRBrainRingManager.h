@@ -40,14 +40,12 @@ extern NSString * const kGameDidResumeAfterWrongAnswer;
 
 
 // Notification userInfo dictionary keys
-
 extern NSString * const kPlayersKey;
 extern NSString * const kDelayKey;
 extern NSString * const kPlayerKey;
 extern NSString * const kPlayerTimeKey;
 
 // Game states
-
 typedef NS_ENUM(NSInteger, BRGameState) {
     kGameStateStopped,                          ///< An initial game state.
     
@@ -68,10 +66,11 @@ typedef NS_ENUM(NSInteger, BRGameState) {
     kGameStateTimerCountsTimeAfterWrongAnswer   ///< The timer runs if the previous player/team answered wrong.
 };
 
-
 /// @class BRBrainRingManager
 /// @brief This is the main model class in the application.
 @interface BRBrainRingManager : NSObject
+
+#pragma mark - Managing players
 
 /// @brief Adds a player to a game. If a player already exists, it won't be added.
 /// @param[in] aPlayer Unique player name. This can be a device ID or a custom string.
@@ -82,6 +81,24 @@ typedef NS_ENUM(NSInteger, BRGameState) {
 /// @param[in] aPlayer Unique player name. If no user is found, nothing happens.
 - (void)removePlayer:(NSString *)aPlayer;
 
+#pragma mark - Automatic gameplay
+
+/// @brief Use this method to run a game in a fully automatic mode.
+- (void)startGameInAutomaticMode;
+
+/// @brief Call this method when the user presses a game button in the client app.
+/// @param[in] aPlayer Unique player name.
+/// @param[in] aTime Time measured on a device.
+/// @param[in] aState Game state on a device.
+- (void)player:(NSString *)aPlayer didPressButtonWithInternalTime:(NSTimeInterval)aTime internalGameState:(BRGameState)aState;
+
+/// @brief Call this method after the user answered a question.
+/// @param[in] aPlayer Unique player name.
+/// @param[in] aFlag Boolean flag: YES if the answer was correct.
+- (void)player:(NSString *)aPLayer didAnswerCorrecly:(BOOL)aFlag;
+
+#pragma mark - Manual gameplay
+
 /// @brief Starts timer for 60 s after a short delay.
 - (void)startTimerForFullTime;
 
@@ -90,11 +107,5 @@ typedef NS_ENUM(NSInteger, BRGameState) {
 
 /// @brief Force stop the game, e.g. in the case of a referee did something wrong.
 - (void)forceStopGame;
-
-/// @brief Call this method when the user presses a game button in the client app.
-/// @param[in] aPlayer Unique player name.
-/// @param[in] aTime Time measured on a device.
-/// @param[in] aState Game state on a device.
-- (void)player:(NSString *)aPlayer didPressButtonWithInternalTime:(NSTimeInterval)aTime internalGameState:(BRGameState)aState;
 
 @end

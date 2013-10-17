@@ -10,12 +10,12 @@
 #import <sys/time.h>
 
 // Notifications
-NSString * const kTimerWillStart = @"kTimerWillStart";
-NSString * const kTimerDidStart = @"kTimerDidStart";
-NSString * const kTimerDidStop = @"kTimerDidStop";
-NSString * const kGameDidReset = @"kGameDidReset";
+NSString * const kGameDidStop = @"kGameDidStop";
+NSString * const kGameWillStartAfterDelay = @"kGameWillStartAfterDelay";
+NSString * const kPlayerDidPressFalseStart = @"kPlayerDidPressFalseStart";
+NSString * const kGameDidStart = @"kGameDidStart";
 NSString * const kPlayerDidPressButton = @"kPlayerDidPressButton";
-NSString * const kShouldProcessFalseStartDidChange = @"kShouldProcessFalseStartDidChange";
+NSString * const kGameDidResumeAfterWrongAnswer = @"kGameDidResumeAfterWrongAnswer";
 
 // Notification Info keys
 NSString * const kPlayersKey = @"kPlayersKey";
@@ -38,6 +38,7 @@ const NSTimeInterval kTimeAfterWrongAnswer = 20.;
 
 @end
 
+
 @implementation BRBrainRingManager
 
 #pragma mark - Public
@@ -52,6 +53,14 @@ const NSTimeInterval kTimeAfterWrongAnswer = 20.;
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    [_allPlayers release];
+    [_playersInGame release];
+    
+    [super dealloc];
 }
 
 - (BOOL)addPlayer:(NSString *)aPlayer
@@ -72,6 +81,21 @@ const NSTimeInterval kTimeAfterWrongAnswer = 20.;
     [self.allPlayers removeObject:aPlayer];
 }
 
+- (void)startGameInAutomaticMode
+{
+    
+}
+
+- (void)player:(NSString *)aPlayer didPressButtonWithInternalTime:(NSTimeInterval)aTime internalGameState:(BRGameState)aState
+{
+    
+}
+
+- (void)player:(NSString *)aPLayer didAnswerCorrecly:(BOOL)aFlag
+{
+    
+}
+
 - (void)startTimerForFullTime
 {
     gettimeofday(&_currentTimeVal, NULL);
@@ -79,28 +103,14 @@ const NSTimeInterval kTimeAfterWrongAnswer = 20.;
 
 }
 
-/// @brief Starts timer for 20 s without a delay.
 - (void)startTimerAfterWrongAnswer
 {
     
 }
 
-/// @brief Force stop the game, e.g. in the case of a referee did something wrong.
 - (void)forceStopGame
 {
     
 }
-
-/// @brief Call this method when the user presses a game button in the client app.
-/// @param[in] aPlayer Unique player name.
-/// @param[in] aTime Time measured on a device.
-/// @param[in] aState Game state on a device.
-- (void)player:(NSString *)aPlayer didPressButtonWithInternalTime:(NSTimeInterval)aTime internalGameState:(BRGameState)aState
-{
-    
-}
-
-
-
 
 @end
