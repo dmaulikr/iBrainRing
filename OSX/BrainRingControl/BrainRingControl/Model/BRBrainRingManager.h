@@ -27,7 +27,7 @@ extern NSString * const kGameWillStartAfterDelay;
 extern NSString * const kPlayerDidPressFalseStart;
 
 /// Full time timer (60 s) was run.
-extern NSString * const kGameDidStart;
+extern NSString * const kGameDidStartFullTime;
 
 /// A player pressed the game button.
 /// userInfo keys:
@@ -36,7 +36,7 @@ extern NSString * const kGameDidStart;
 extern NSString * const kPlayerDidPressButton;
 
 /// 20 second timer was run.
-extern NSString * const kGameDidResumeAfterWrongAnswer;
+extern NSString * const kGameDidStartShortTime;
 
 
 // Notification userInfo dictionary keys
@@ -63,7 +63,7 @@ typedef NS_ENUM(NSInteger, BRGameState) {
                                                 ///< timer runs additional time for another team
                                                 ///< changing the state to kGameStateTimerCountsTimeAfterWrongAnswer
     
-    kGameStateTimerCountsTimeAfterWrongAnswer   ///< The timer runs if the previous player/team answered wrong.
+    kGameStateTimerCountsShortTime   ///< The timer runs if the previous player/team answered wrong.
 };
 
 /// @class BRBrainRingManager
@@ -81,13 +81,7 @@ typedef NS_ENUM(NSInteger, BRGameState) {
 /// @param[in] aPlayer Unique player name. If no user is found, nothing happens.
 - (void)removePlayer:(NSString *)aPlayer;
 
-#pragma mark - Automatic gameplay
-
-/// @brief Use this method to run a game in a fully automatic mode.
-/// @param[out] anError Pointer to an NSError variable
-/// @return YES if the game started. If the method fails to start the game, it
-/// returns NO and sets NSError.
-- (BOOL)startGameInAutomaticModeError:(NSError **)anError;
+#pragma mark - Gameplay
 
 /// @brief Call this method when the user presses a game button in the client app.
 /// @param[in] aPlayer Unique player name.
@@ -100,15 +94,13 @@ typedef NS_ENUM(NSInteger, BRGameState) {
 /// @param[in] aFlag Boolean flag: YES if the answer was correct.
 - (void)player:(NSString *)aPLayer didAnswerCorrecly:(BOOL)aFlag;
 
-#pragma mark - Basic gameplay methods
-
 /// @brief Starts timer for 60 s after a short delay.
 /// @return NO if an error occurs
-- (BOOL)startTimerForFullTime;
+- (BOOL)startTimerForFullTimeAfterRandomDelay;
 
 /// @brief Starts timer for 20 s without a delay.
 /// @return NO if an error occurs
-- (BOOL)startTimerAfterWrongAnswer;
+- (BOOL)startTimerForShortTime;
 
 /// @brief Force stop the game, e.g. in the case of a referee did something wrong.
 - (void)forceStopGame;
