@@ -102,7 +102,7 @@ typedef NS_ENUM(NSInteger, BRGameState) {
 /// @return NO if an error occurs
 - (BOOL)startTimerForShortTime;
 
-/// @brief Force stop the game, e.g. in the case of a referee did something wrong.
-- (void)forceStopGame;
+/// @brief Stops the game, resets all players.
+- (void)stopGame;
 
 @end
