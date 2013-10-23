@@ -39,6 +39,7 @@ const NSTimeInterval kShortTime = 20.0;
 
 - (void)randomDelayTimerFired:(NSTimer *)aTimer;
 - (void)fullTimeTimerFired:(NSTimer *)aTimer;
+- (void)shortTimerFired:(NSTimer *)aTimer;
 - (BOOL)startTimerForFullTime;
 - (void)stopGame;
 
@@ -94,41 +95,36 @@ const NSTimeInterval kShortTime = 20.0;
 
 - (void)player:(NSString *)aPlayer didPressButtonWithInternalTime:(NSTimeInterval)aTime internalGameState:(BRGameState)aState
 {
+    switch (aState)
+    {
+        case kGameStateStopped:
+        case kGameStateDelayedBeforeTimerStart:
+        {
+            self.gameState = kGameStateFalseStart;
+            [[NSNotificationCenter defaultCenter] postNotificationName:kPlayerDidPressFalseStart
+                                                                object:self
+                                                              userInfo:@{kPlayerKey:aPlayer, kPlayerTimeKey:@(aTime)}];
+            break;
+        }
+        case kGameStateTimerCountsFullTime:
+        case kGameStateTimerCountsShortTime:
+        {
+            self.gameState = kGameStatePaused;
+            [[NSNotificationCenter defaultCenter] postNotificationName:kPlayerDidPressButton
+                                                                object:self
+                                                              userInfo:@{kPlayerKey:aPlayer, kPlayerTimeKey:@(aTime)}];
+            break;
+        }
+        default:
+            return;
+    }
+    
     //    double timeDiff = (timeValueNow.tv_sec - self.startTimeValue.tv_sec) + 1e-6 * (timeValueNow.tv_usec - self.startTimeValue.tv_usec);
 }
 
 - (void)player:(NSString *)aPLayer didAnswerCorrecly:(BOOL)aFlag
 {
     
-}
-
-- (void)randomDelayTimerFired:(NSTimer *)aTimer
-{
-    if (aTimer == self.gameTimer)
-    {
-        assert(![self.gameTimer isValid]);
-        
-        self.gameTimer = nil;
-        [self startTimerForFullTime];
-    }
-}
-
-- (void)fullTimeTimerFired:(NSTimer *)aTimer
-{
-    if (aTimer == self.gameTimer)
-    {
-        self.gameTimer = nil;
-        [self stopGame];
-    }
-}
-
-- (void)shortTimerFired:(NSTimer *)aTimer
-{
-    if (aTimer == self.gameTimer)
-    {
-        self.gameTimer = nil;
-        [self stopGame];
-    }
 }
 
 - (BOOL)startTimerForFullTimeAfterRandomDelay
@@ -154,32 +150,6 @@ const NSTimeInterval kShortTime = 20.0;
         [[NSNotificationCenter defaultCenter] postNotificationName:kGameWillStartAfterDelay
                                                             object:self
                                                           userInfo:@{kDelayKey:@(randomDelay)}];
-    }
-    
-    return result;
-}
-
-- (BOOL)startTimerForFullTime
-{
-    assert(![self.gameTimer isValid]);
-    
-    BOOL result = self.gameState == kGameStateDelayedBeforeTimerStart;
-    
-    if (result)
-        result = self.allPlayers.count == kMaxPlayersCount;
-    
-    if (result)
-    {
-        self.gameTimer = [NSTimer scheduledTimerWithTimeInterval:kFullTime
-                                                          target:self
-                                                        selector:@selector(fullTimeTimerFired:)
-                                                        userInfo:nil
-                                                         repeats:NO];
-        self.gameState = kGameStateTimerCountsFullTime;
-        [[NSNotificationCenter defaultCenter] postNotificationName:kGameDidStartFullTime
-                                                            object:self
-                                                          userInfo:nil];
-        gettimeofday(&_currentTimeVal, NULL);
     }
     
     return result;
@@ -211,16 +181,74 @@ const NSTimeInterval kShortTime = 20.0;
     return result;
 }
 
+- (void)forceStopGame
+{
+    [self.gameTimer invalidate];
+    [self stopGame];
+}
+
+#pragma mark - Private
+
+- (void)randomDelayTimerFired:(NSTimer *)aTimer
+{
+    if (aTimer == self.gameTimer)
+    {
+        assert(![self.gameTimer isValid]);
+        
+        self.gameTimer = nil;
+        [self startTimerForFullTime];
+    }
+}
+
+- (void)fullTimeTimerFired:(NSTimer *)aTimer
+{
+    if (aTimer == self.gameTimer)
+    {
+        self.gameTimer = nil;
+        [self stopGame];
+    }
+}
+
+- (void)shortTimerFired:(NSTimer *)aTimer
+{
+    if (aTimer == self.gameTimer)
+    {
+        self.gameTimer = nil;
+        [self stopGame];
+    }
+}
+
+- (BOOL)startTimerForFullTime
+{
+    assert(![self.gameTimer isValid]);
+    
+    BOOL result = self.gameState == kGameStateDelayedBeforeTimerStart;
+    
+    if (result)
+        result = self.allPlayers.count == kMaxPlayersCount;
+    
+    if (result)
+    {
+        self.gameTimer = [NSTimer scheduledTimerWithTimeInterval:kFullTime
+                                                          target:self
+                                                        selector:@selector(fullTimeTimerFired:)
+                                                        userInfo:nil
+                                                         repeats:NO];
+        self.gameState = kGameStateTimerCountsFullTime;
+        [[NSNotificationCenter defaultCenter] postNotificationName:kGameDidStartFullTime
+                                                            object:self
+                                                          userInfo:nil];
+        gettimeofday(&_currentTimeVal, NULL);
+    }
+    
+    return result;
+}
+
 - (void)stopGame
 {
     self.gameState = kGameStateStopped;
     self.playersInGame = [self.allPlayers mutableCopy];
 }
 
-- (void)forceStopGame
-{
-    [self.gameTimer invalidate];
-    [self stopGame];
-}
 
 @end
