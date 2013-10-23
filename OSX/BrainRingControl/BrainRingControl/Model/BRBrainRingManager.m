@@ -57,6 +57,7 @@ const NSTimeInterval kShortTime = 20.0;
         _allPlayers = [NSMutableArray new];
         _playersInGame = [NSMutableArray new];
         _gameState = kGameStateStopped;
+        gettimeofday(&_currentTimeVal, NULL);
     }
     
     return self;
@@ -64,6 +65,8 @@ const NSTimeInterval kShortTime = 20.0;
 
 - (void)dealloc
 {
+    [_gameTimer invalidate];
+    [_gameTimer release];
     [_allPlayers release];
     [_playersInGame release];
     
@@ -89,6 +92,7 @@ const NSTimeInterval kShortTime = 20.0;
 - (void)removePlayer:(NSString *)aPlayer
 {
     [self.allPlayers removeObject:aPlayer];
+    [self.playersInGame removeObject:aPlayer];
 }
 
 #pragma mark - Gameplay
@@ -101,6 +105,8 @@ const NSTimeInterval kShortTime = 20.0;
         case kGameStateDelayedBeforeTimerStart:
         {
             self.gameState = kGameStateFalseStart;
+            [self.gameTimer invalidate];
+            
             [[NSNotificationCenter defaultCenter] postNotificationName:kPlayerDidPressFalseStart
                                                                 object:self
                                                               userInfo:@{kPlayerKey:aPlayer, kPlayerTimeKey:@(aTime)}];
@@ -247,7 +253,7 @@ const NSTimeInterval kShortTime = 20.0;
 - (void)stopGame
 {
     self.gameState = kGameStateStopped;
-    self.playersInGame = [self.allPlayers mutableCopy];
+    self.playersInGame = [[self.allPlayers mutableCopy] autorelease];
 }
 
 
