@@ -40,9 +40,6 @@ const NSTimeInterval kShortTime = 20.0;
 /// @brief Players allowed to press the "Big Friendly Button".
 @property (nonatomic, retain) NSMutableArray    *playersInGame;
 
-/// @brief Structure, where timestamps are saved before cnahges of the game state.
-@property (nonatomic, assign) struct timeval    lastTimeVal;
-
 /// @brief Main game timer.
 @property (nonatomic, retain) NSTimer           *gameTimer;
 
@@ -75,7 +72,6 @@ const NSTimeInterval kShortTime = 20.0;
         _allPlayers = [NSMutableArray new];
         _playersInGame = [NSMutableArray new];
         _gameState = kGameStateStopped;
-        gettimeofday(&_lastTimeVal, NULL);
     }
     
     return self;
@@ -122,15 +118,21 @@ const NSTimeInterval kShortTime = 20.0;
 
 - (void)player:(NSString *)aPlayer didPressButtonWithInternalTime:(NSTimeInterval)aTime internalGameState:(BRGameState)aState
 {
+    assert([self.playersInGame containsObject:aPlayer]);
+    if (![self.playersInGame containsObject:aPlayer])
+    {
+        return;
+    }
+    
+    [self disablePlayer:aPlayer];
+    [self.gameTimer invalidate];
+    
     switch (aState)
     {
         case kGameStateStopped:
         case kGameStateDelayedBeforeTimerStart:
         {
             self.gameState = kGameStateFalseStart;
-            [self disablePlayer:aPlayer];
-            [self.gameTimer invalidate];
-            
             [[NSNotificationCenter defaultCenter] postNotificationName:kPlayerDidPressFalseStart
                                                                 object:self
                                                               userInfo:@{kPlayerKey:aPlayer, kPlayerTimeKey:@(aTime)}];
@@ -140,35 +142,36 @@ const NSTimeInterval kShortTime = 20.0;
         case kGameStateTimerCountsShortTime:
         {
             self.gameState = kGameStatePaused;
-            [self disablePlayer:aPlayer];
-            [self.gameTimer invalidate];
-            
-            struct timeval timeValNow = {0, 0};
-            if (gettimeofday(&timeValNow, NULL) == -1)
-            {
-                NSLog(@"%s Error: %s", sel_getName(_cmd), strerror(errno));
-                return;
-            }
-            
-            // TODO: Here we want to save the time elapsed.
-//            NSTimeInterval timeDiff = (timeValNow.tv_sec - self.lastTimeVal.tv_sec) + 1e-6 * (timeValNow.tv_usec - self.lastTimeVal.tv_usec);
-            
-            
             [[NSNotificationCenter defaultCenter] postNotificationName:kPlayerDidPressButton
                                                                 object:self
                                                               userInfo:@{kPlayerKey:aPlayer, kPlayerTimeKey:@(aTime)}];
             break;
         }
         default:
+        {
             return;
+        }
     }
-    
-    //    double timeDiff = (timeValueNow.tv_sec - self.startTimeValue.tv_sec) + 1e-6 * (timeValueNow.tv_usec - self.startTimeValue.tv_usec);
 }
 
 - (void)player:(NSString *)aPLayer didAnswerCorrecly:(BOOL)aFlag
 {
+    // Ensure, that the player is allowed to press the Big Friendly Button and
+    // the game timer is not scheduled
+    assert([self.playersInGame containsObject:aPLayer] && ![self.gameTimer isValid]);
+    if (![self.playersInGame containsObject:aPLayer] || [self.gameTimer isValid])
+    {
+        return;
+    }
     
+    if (aFlag)
+    {
+        [self stopGame];
+    }
+    else
+    {
+        [self startTimerForShortTime];
+    }
 }
 
 - (BOOL)startTimerForFullTimeAfterRandomDelay
@@ -178,14 +181,15 @@ const NSTimeInterval kShortTime = 20.0;
     BOOL result = self.gameState == kGameStateStopped;
     
     if (result)
+    {
         result = self.allPlayers.count == kMaxPlayersCount;
+    }
     
     if (result)
     {
         // delay for 1-1.5 s
         NSTimeInterval randomDelay = 1.0 + arc4random_uniform(500.0) / 500.0;
         
-        gettimeofday(&_lastTimeVal, NULL);
         self.gameTimer = [NSTimer scheduledTimerWithTimeInterval:randomDelay
                                                           target:self
                                                         selector:@selector(randomDelayTimerFired:)
@@ -207,7 +211,9 @@ const NSTimeInterval kShortTime = 20.0;
     BOOL result = self.gameState == kGameStatePaused || self.gameState == kGameStateFalseStart;
     
     if (result)
+    {
         result = self.playersInGame.count == 1;
+    }
     
     if (result)
     {
@@ -220,7 +226,6 @@ const NSTimeInterval kShortTime = 20.0;
         [[NSNotificationCenter defaultCenter] postNotificationName:kGameDidStartShortTime
                                                             object:self
                                                           userInfo:nil];
-        gettimeofday(&_lastTimeVal, NULL);
     }
     
     return result;
@@ -254,7 +259,9 @@ const NSTimeInterval kShortTime = 20.0;
     BOOL result = self.gameState == kGameStateDelayedBeforeTimerStart;
     
     if (result)
+    {
         result = self.allPlayers.count == kMaxPlayersCount;
+    }
     
     if (result)
     {
@@ -267,7 +274,6 @@ const NSTimeInterval kShortTime = 20.0;
         [[NSNotificationCenter defaultCenter] postNotificationName:kGameDidStartFullTime
                                                             object:self
                                                           userInfo:nil];
-        gettimeofday(&_lastTimeVal, NULL);
     }
     
     return result;

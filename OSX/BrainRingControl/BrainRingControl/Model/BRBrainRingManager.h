@@ -89,7 +89,7 @@ typedef NS_ENUM(NSInteger, BRGameState) {
 /// @param[in] aState Game state on a device.
 - (void)player:(NSString *)aPlayer didPressButtonWithInternalTime:(NSTimeInterval)aTime internalGameState:(BRGameState)aState;
 
-/// @brief Call this method after the user answered a question.
+/// @brief Call this method after the user answered a question. This method must be called only after a player presses the button.
 /// @param[in] aPlayer Unique player name.
 /// @param[in] aFlag Boolean flag: YES if the answer was correct.
 - (void)player:(NSString *)aPLayer didAnswerCorrecly:(BOOL)aFlag;
