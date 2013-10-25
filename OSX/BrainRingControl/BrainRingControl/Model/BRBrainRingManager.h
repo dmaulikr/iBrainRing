@@ -60,10 +60,10 @@ typedef NS_ENUM(NSInteger, BRGameState) {
     kGameStatePaused,                           ///< This state is inited by a user's action.
                                                 ///< The timer is stopped. A player/team answers the question.
                                                 ///< If the answer is correct the game state changes to kGameStateStopped, otherwise
-                                                ///< timer runs additional time for another team
-                                                ///< changing the state to kGameStateTimerCountsTimeAfterWrongAnswer
+                                                ///< the timer runs additional time for another team
+                                                ///< changing the state to kGameStateTimerCountsShortTime
     
-    kGameStateTimerCountsShortTime   ///< The timer runs if the previous player/team answered wrong.
+    kGameStateTimerCountsShortTime              ///< The timer runs if the previous player/team answered wrong.
 };
 
 /// @class BRBrainRingManager
