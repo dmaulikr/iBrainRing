@@ -71,7 +71,7 @@ typedef NS_ENUM(NSInteger, BRGameState) {
 @interface BRBrainRingManager : NSObject
 
 /// @brief Current game state.
-@property (nonatomic, assign) BRGameState       gameState;
+@property (nonatomic, readonly) BRGameState       gameState;
 
 #pragma mark - Managing players
 
@@ -105,7 +105,7 @@ typedef NS_ENUM(NSInteger, BRGameState) {
 /// @return NO if an error occurs
 - (BOOL)startTimerForShortTime;
 
-/// @brief Resets the game, resets all players.
+/// @brief Resets the game
 - (void)resetGame;
 
 @end

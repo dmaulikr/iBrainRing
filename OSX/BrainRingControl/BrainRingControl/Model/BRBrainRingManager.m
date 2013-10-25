@@ -30,6 +30,9 @@ const NSTimeInterval kShortTime = 20.0;
 
 @interface BRBrainRingManager ()
 
+/// @brief Current game state.
+@property (nonatomic, assign) BRGameState       gameState;
+
 /// @brief All players registered, count in range between 0 and kMaxPlayersCount.
 @property (nonatomic, retain) NSMutableArray    *allPlayers;
 
