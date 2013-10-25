@@ -7,7 +7,6 @@
 //
 
 #import "BRBrainRingManager.h"
-#import <sys/time.h>
 
 // Notifications
 NSString * const kGameDidReset = @"kGameDidReset";
