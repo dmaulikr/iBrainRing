@@ -51,13 +51,13 @@ typedef NS_ENUM(NSInteger, BRGameState) {
     
     kGameStateDelayedBeforeTimerStart,          ///< Random delay before the timer starts.
     
-    kGameStateFalseStart,                       ///< The user inited state.
+    kGameStateFalseStart,                       ///< This state is inited by a user's action.
                                                 ///< A player had pressed button before the timer was run, i.e. while
                                                 ///< kGameStateDelayedBeforeTimerStart.
     
     kGameStateTimerCountsFullTime,              ///< The timer is counting full time (60 seconds in brain ring).
     
-    kGameStatePaused,                           ///< The user inited state.
+    kGameStatePaused,                           ///< This state is inited by a user's action.
                                                 ///< The timer is stopped. A player/team answers the question.
                                                 ///< If the answer is correct the game state changes to kGameStateStopped, otherwise
                                                 ///< timer runs additional time for another team
@@ -71,7 +71,7 @@ typedef NS_ENUM(NSInteger, BRGameState) {
 @interface BRBrainRingManager : NSObject
 
 /// @brief Current game state.
-@property (nonatomic, readonly) BRGameState       gameState;
+@property (nonatomic, readonly) BRGameState     gameState;
 
 #pragma mark - Managing players
 
