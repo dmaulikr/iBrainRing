@@ -10,12 +10,12 @@
 #import <sys/time.h>
 
 // Notifications
-NSString * const kGameDidStop = @"kGameDidStop";
+NSString * const kGameDidReset = @"kGameDidReset";
 NSString * const kGameWillStartAfterDelay = @"kGameWillStartAfterDelay";
 NSString * const kPlayerDidPressFalseStart = @"kPlayerDidPressFalseStart";
 NSString * const kGameDidStartFullTime = @"kGameDidStart";
 NSString * const kPlayerDidPressButton = @"kPlayerDidPressButton";
-NSString * const kGameDidStartShortTime = @"kGameDidResumeAfterWrongAnswer";
+NSString * const kGameDidStartShortTime = @"kGameDidStartShortTime";
 
 // Notification Info keys
 NSString * const kPlayersKey = @"kPlayersKey";
@@ -30,9 +30,6 @@ const NSTimeInterval kShortTime = 20.0;
 
 
 @interface BRBrainRingManager ()
-
-/// @brief Current game state.
-@property (nonatomic, assign) BRGameState       gameState;
 
 /// @brief All players registered, count in range between 0 and kMaxPlayersCount.
 @property (nonatomic, retain) NSMutableArray    *allPlayers;
@@ -94,7 +91,7 @@ const NSTimeInterval kShortTime = 20.0;
 {
     BOOL result = NO;
     NSMutableArray *players = self.allPlayers;
-    if (kMaxPlayersCount < players.count && ![players containsObject:aPlayer])
+    if (players.count < kMaxPlayersCount && ![players containsObject:aPlayer])
     {
         [players addObject:aPlayer];
         result = YES;
@@ -118,20 +115,20 @@ const NSTimeInterval kShortTime = 20.0;
 
 - (void)player:(NSString *)aPlayer didPressButtonWithInternalTime:(NSTimeInterval)aTime internalGameState:(BRGameState)aState
 {
-    assert([self.playersInGame containsObject:aPlayer]);
     if (![self.playersInGame containsObject:aPlayer])
     {
         return;
     }
-    
-    [self disablePlayer:aPlayer];
-    [self.gameTimer invalidate];
+    assert([self.playersInGame containsObject:aPlayer]);
     
     switch (aState)
     {
         case kGameStateStopped:
         case kGameStateDelayedBeforeTimerStart:
         {
+            [self.gameTimer invalidate];
+            [self disablePlayer:aPlayer];
+
             self.gameState = kGameStateFalseStart;
             [[NSNotificationCenter defaultCenter] postNotificationName:kPlayerDidPressFalseStart
                                                                 object:self
@@ -141,6 +138,9 @@ const NSTimeInterval kShortTime = 20.0;
         case kGameStateTimerCountsFullTime:
         case kGameStateTimerCountsShortTime:
         {
+            [self.gameTimer invalidate];
+            // Don't disable player until he answers
+
             self.gameState = kGameStatePaused;
             [[NSNotificationCenter defaultCenter] postNotificationName:kPlayerDidPressButton
                                                                 object:self
@@ -156,27 +156,29 @@ const NSTimeInterval kShortTime = 20.0;
 
 - (void)player:(NSString *)aPLayer didAnswerCorrecly:(BOOL)aFlag
 {
-    // Ensure, that the player is allowed to press the Big Friendly Button and
-    // the game timer is not scheduled
-    assert([self.playersInGame containsObject:aPLayer] && ![self.gameTimer isValid]);
-    if (![self.playersInGame containsObject:aPLayer] || [self.gameTimer isValid])
+    // Ensure, that the player is allowed to press the Big Friendly Button
+    assert([self.playersInGame containsObject:aPLayer]);
+    [self.gameTimer invalidate];
+
+    if (![self.playersInGame containsObject:aPLayer])
     {
         return;
     }
     
-    if (aFlag)
+    if (aFlag || self.playersInGame.count == 1)
     {
-        [self stopGame];
+        [self resetGame];
     }
     else
     {
+        [self disablePlayer:aPLayer];
         [self startTimerForShortTime];
     }
 }
 
 - (BOOL)startTimerForFullTimeAfterRandomDelay
 {
-    assert(![self.gameTimer isValid]);
+    [self resetGame];
     
     BOOL result = self.gameState == kGameStateStopped;
     
@@ -206,7 +208,7 @@ const NSTimeInterval kShortTime = 20.0;
 
 - (BOOL)startTimerForShortTime
 {
-    assert(![self.gameTimer isValid]);
+    [self.gameTimer invalidate];
     
     BOOL result = self.gameState == kGameStatePaused || self.gameState == kGameStateFalseStart;
     
@@ -237,8 +239,7 @@ const NSTimeInterval kShortTime = 20.0;
 {
     if (aTimer == self.gameTimer)
     {
-        assert(![self.gameTimer isValid]);
-        
+        [self.gameTimer invalidate];
         self.gameTimer = nil;
         [self startTimerForFullTime];
     }
@@ -248,13 +249,13 @@ const NSTimeInterval kShortTime = 20.0;
 {
     if (aTimer == self.gameTimer)
     {
-        [self stopGame];
+        [self resetGame];
     }
 }
 
 - (BOOL)startTimerForFullTime
 {
-    assert(![self.gameTimer isValid]);
+    [self.gameTimer invalidate];
     
     BOOL result = self.gameState == kGameStateDelayedBeforeTimerStart;
     
@@ -279,13 +280,15 @@ const NSTimeInterval kShortTime = 20.0;
     return result;
 }
 
-- (void)stopGame
+- (void)resetGame
 {
     [self.gameTimer invalidate];
     self.gameTimer = nil;
     self.gameState = kGameStateStopped;
     self.playersInGame = [[self.allPlayers mutableCopy] autorelease];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kGameDidReset
+                                                        object:self
+                                                      userInfo:nil];
 }
-
 
 @end

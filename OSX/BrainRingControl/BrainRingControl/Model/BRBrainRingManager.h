@@ -13,7 +13,7 @@
 /// The @c kGameDidStop notification is sent after the game was stopped.
 /// userInfo keys:
 /// @arg @c kPlayersKey - NSArray of players
-extern NSString * const kGameDidStop;
+extern NSString * const kGameDidReset;
 
 /// The @c kGameWillStartAfterDelay notification is sent after the delay timer was run.
 /// userInfo keys:
@@ -70,6 +70,9 @@ typedef NS_ENUM(NSInteger, BRGameState) {
 /// @brief This is the main model class in the application.
 @interface BRBrainRingManager : NSObject
 
+/// @brief Current game state.
+@property (nonatomic, assign) BRGameState       gameState;
+
 #pragma mark - Managing players
 
 /// @brief Adds a player to a game. If a player already exists, it won't be added.
@@ -102,7 +105,7 @@ typedef NS_ENUM(NSInteger, BRGameState) {
 /// @return NO if an error occurs
 - (BOOL)startTimerForShortTime;
 
-/// @brief Stops the game, resets all players.
-- (void)stopGame;
+/// @brief Resets the game, resets all players.
+- (void)resetGame;
 
 @end
