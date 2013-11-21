@@ -11,6 +11,8 @@
 		75E8E8A817FE3F6900EF409E /* QCommandConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 75E8E8A217FE3F6900EF409E /* QCommandConnection.m */; };
 		75E8E8A917FE3F6900EF409E /* QCommandLineConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = 75E8E8A417FE3F6900EF409E /* QCommandLineConnection.m */; };
 		75E8E8AA17FE3F6900EF409E /* QServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 75E8E8A617FE3F6900EF409E /* QServer.m */; };
+		75E8E8AD1801D6F900EF409E /* BRBrainRingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 75E8E8AC1801D6F900EF409E /* BRBrainRingManager.m */; };
+		75E8E8AE1801D6F900EF409E /* BRBrainRingManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 75E8E8AC1801D6F900EF409E /* BRBrainRingManager.m */; };
 		75FECA4F17F5FDE100C2B382 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FECA4E17F5FDE100C2B382 /* Cocoa.framework */; };
 		75FECA5917F5FDE100C2B382 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 75FECA5717F5FDE100C2B382 /* InfoPlist.strings */; };
 		75FECA5B17F5FDE100C2B382 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FECA5A17F5FDE100C2B382 /* main.m */; };
@@ -43,6 +45,8 @@
 		75E8E8A417FE3F6900EF409E /* QCommandLineConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QCommandLineConnection.m; path = ../../../Common/3rdParty/QCommandLineConnection.m; sourceTree = "<group>"; };
 		75E8E8A517FE3F6900EF409E /* QServer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QServer.h; path = ../../../Common/3rdParty/QServer.h; sourceTree = "<group>"; };
 		75E8E8A617FE3F6900EF409E /* QServer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QServer.m; path = ../../../Common/3rdParty/QServer.m; sourceTree = "<group>"; };
+		75E8E8AB1801D6F900EF409E /* BRBrainRingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BRBrainRingManager.h; sourceTree = "<group>"; };
+		75E8E8AC1801D6F900EF409E /* BRBrainRingManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BRBrainRingManager.m; sourceTree = "<group>"; };
 		75FECA4B17F5FDE100C2B382 /* BrainRingControl.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BrainRingControl.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		75FECA4E17F5FDE100C2B382 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		75FECA5117F5FDE100C2B382 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -186,6 +190,8 @@
 		75FECACE17F61C9000C2B382 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				75E8E8AB1801D6F900EF409E /* BRBrainRingManager.h */,
+				75E8E8AC1801D6F900EF409E /* BRBrainRingManager.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -305,6 +311,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75E8E8AD1801D6F900EF409E /* BRBrainRingManager.m in Sources */,
 				75FECAD317F61F1300C2B382 /* BRAppDelegate.m in Sources */,
 				75E8E8A917FE3F6900EF409E /* QCommandLineConnection.m in Sources */,
 				75FECA5B17F5FDE100C2B382 /* main.m in Sources */,
@@ -318,6 +325,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75E8E8AE1801D6F900EF409E /* BRBrainRingManager.m in Sources */,
 				75FECA7917F5FDE100C2B382 /* BrainRingControlTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
